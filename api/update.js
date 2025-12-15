@@ -3,15 +3,9 @@
 export default async function handler(req, res) {
   const { id } = req.query; // Get ID from query string (?id=123)
   
-  // Use Environment Variable set in Vercel Dashboard
-  const baseUrl = process.env.BACKEND_URL;
+  // Use Environment Variable or Fallback to known IP
+  const baseUrl = process.env.BACKEND_URL || 'http://13.231.95.36:5000';
 
-  if (!baseUrl) {
-    console.error("Configuration Error: BACKEND_URL environment variable is not set.");
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
-
-  // Construct the full URL
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const AWS_SERVER_URL = `${cleanBaseUrl}/api/update/${id}`;
 
@@ -41,6 +35,6 @@ export default async function handler(req, res) {
     return res.status(200).json(data);
   } catch (error) {
     console.error('Proxy Error:', error);
-    return res.status(500).json({ error: 'Failed to connect to backend server' });
+    return res.status(500).json({ error: 'Failed to connect to backend server. Please check BACKEND_URL configuration.' });
   }
 }

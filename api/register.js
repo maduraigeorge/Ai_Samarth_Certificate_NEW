@@ -1,16 +1,10 @@
 
 // Vercel Serverless Function: Proxy for Registration
 export default async function handler(req, res) {
-  // Use Environment Variable set in Vercel Dashboard
-  const baseUrl = process.env.BACKEND_URL;
+  // Use Environment Variable or Fallback to known IP
+  const baseUrl = process.env.BACKEND_URL || 'http://13.231.95.36:5000';
 
-  if (!baseUrl) {
-    console.error("Configuration Error: BACKEND_URL environment variable is not set.");
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
-
-  // Construct the full URL
-  // We ensure we don't end up with double slashes if the env var has a trailing slash
+  // Remove trailing slash if present
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const AWS_SERVER_URL = `${cleanBaseUrl}/api/register`;
 
@@ -27,6 +21,12 @@ export default async function handler(req, res) {
       body: JSON.stringify(req.body),
     });
 
+    // Check if the response from AWS is valid JSON
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+       throw new Error(`Invalid response from backend: ${response.statusText}`);
+    }
+
     const data = await response.json();
 
     if (!response.ok) {
@@ -36,6 +36,6 @@ export default async function handler(req, res) {
     return res.status(200).json(data);
   } catch (error) {
     console.error('Proxy Error:', error);
-    return res.status(500).json({ error: 'Failed to connect to backend server' });
+    return res.status(500).json({ error: 'Failed to connect to backend server. Please check BACKEND_URL configuration.' });
   }
 }
