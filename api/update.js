@@ -3,8 +3,17 @@
 export default async function handler(req, res) {
   const { id } = req.query; // Get ID from query string (?id=123)
   
-  // Your AWS Server IP
-  const AWS_SERVER_URL = `http://13.231.95.36:5000/api/update/${id}`;
+  // Use Environment Variable set in Vercel Dashboard
+  const baseUrl = process.env.BACKEND_URL;
+
+  if (!baseUrl) {
+    console.error("Configuration Error: BACKEND_URL environment variable is not set.");
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
+  // Construct the full URL
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+  const AWS_SERVER_URL = `${cleanBaseUrl}/api/update/${id}`;
 
   if (req.method !== 'PATCH') {
     return res.status(405).json({ error: 'Method not allowed' });

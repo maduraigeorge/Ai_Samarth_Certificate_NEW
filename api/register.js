@@ -1,8 +1,18 @@
 
 // Vercel Serverless Function: Proxy for Registration
 export default async function handler(req, res) {
-  // Your AWS Server IP
-  const AWS_SERVER_URL = 'http://13.231.95.36:5000/api/register';
+  // Use Environment Variable set in Vercel Dashboard
+  const baseUrl = process.env.BACKEND_URL;
+
+  if (!baseUrl) {
+    console.error("Configuration Error: BACKEND_URL environment variable is not set.");
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
+  // Construct the full URL
+  // We ensure we don't end up with double slashes if the env var has a trailing slash
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+  const AWS_SERVER_URL = `${cleanBaseUrl}/api/register`;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
