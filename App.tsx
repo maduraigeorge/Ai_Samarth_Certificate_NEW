@@ -170,6 +170,12 @@ const App: React.FC = () => {
             onDownload={handleDownloadRecorded}
         />
       )}
+      
+      <div className="text-center mt-2 md:mt-4 shrink-0 pb-2 z-20 relative">
+             <p className="text-[10px] text-slate-400 uppercase tracking-widest">
+               © {new Date().getFullYear()} AI Samarth | Secure Portal v1.2
+             </p>
+      </div>
     </div>
   );
 };

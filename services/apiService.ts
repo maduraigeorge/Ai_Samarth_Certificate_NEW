@@ -1,8 +1,9 @@
 
 import { Participant } from '../types';
 
-// This must match the port defined in server.js
-const BACKEND_API_URL = 'http://localhost:5000/api'; 
+// Use environment variable for API URL (Production) or localhost (Development)
+// In Vercel (Vite), set VITE_API_URL to your backend endpoint (e.g., https://your-server.com/api)
+const BACKEND_API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000/api';
 
 export interface RegistrationData {
   fullName: string;
