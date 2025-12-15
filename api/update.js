@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { id } = req.query; // Get ID from query string (?id=123)
   
   // Use Environment Variable or Fallback to known IP
-  const baseUrl = process.env.BACKEND_URL || 'http://13.231.95.36:5000';
+  const baseUrl = process.env.BACKEND_URL || 'http://13.232.90.36:5000';
 
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const AWS_SERVER_URL = `${cleanBaseUrl}/api/update/${id}`;
