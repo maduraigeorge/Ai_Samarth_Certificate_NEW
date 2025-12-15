@@ -1,24 +1,31 @@
 
 {
-  "name": "ai-samarth-backend",
+  "name": "ai-samarth-app",
   "version": "1.0.0",
-  "description": "Backend server for Certificate Portal",
-  "main": "server.js",
+  "description": "Hybrid Frontend and Backend App",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "server": "nodemon server.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.9.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.12.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "nodemon": "^3.1.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
   }
 }
