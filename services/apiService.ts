@@ -1,9 +1,9 @@
 
 import { Participant } from '../types';
 
-// Use environment variable for API URL (Production) or localhost (Development)
-// In Vercel (Vite), set VITE_API_URL to your backend endpoint (e.g., https://your-server.com/api)
-const BACKEND_API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000/api';
+// POINT TO VERCEL (Local Proxy)
+// We use a relative path '/api'. Vercel will handle these requests securely (HTTPS).
+const BACKEND_API_URL = '/api';
 
 export interface RegistrationData {
   fullName: string;
@@ -16,6 +16,7 @@ export interface RegistrationData {
 
 export const registerUser = async (data: RegistrationData): Promise<Participant> => {
   try {
+    // Calls the Vercel function: api/register.js
     const response = await fetch(`${BACKEND_API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,26 +40,16 @@ export const registerUser = async (data: RegistrationData): Promise<Participant>
     };
   } catch (error) {
     console.warn("Backend API Error:", error);
-    console.info("⚠️ Backend unreachable. Switching to DEMO MODE (Mock Data).");
-    
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          id: Date.now().toString(),
-          ...data,
-          quizPassed: false,
-          certificateDownloaded: false,
-          registrationDate: new Date().toISOString(),
-          webinarTopic: "AI Literacy"
-        });
-      }, 1000);
-    });
+    // Fallback logic could go here, but for now we throw to show the error
+    throw error;
   }
 };
 
 export const updateParticipantStatus = async (id: string, status: { quizPassed?: boolean; certificateDownloaded?: boolean }) => {
   try {
-    const response = await fetch(`${BACKEND_API_URL}/update/${id}`, {
+    // Calls the Vercel function: api/update.js with ID as a query parameter
+    // We send ID as a query param (?id=...) to simplify the Vercel function routing
+    const response = await fetch(`${BACKEND_API_URL}/update?id=${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(status)
@@ -69,6 +60,5 @@ export const updateParticipantStatus = async (id: string, status: { quizPassed?:
     }
   } catch (error) {
     console.warn("Backend API Error (Update Status):", error);
-    console.info("⚠️ Backend unreachable. Update skipped (Demo Mode).");
   }
 };
