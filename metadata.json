@@ -1,0 +1,5 @@
+{
+  "name": "Ai Samarth Certificate Portal",
+  "description": "A certificate portal that allows users to register, take a quiz, and download a certificate. Data is stored in a MySQL database.",
+  "requestFramePermissions": []
+}
