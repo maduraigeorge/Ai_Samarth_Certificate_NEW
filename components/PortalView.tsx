@@ -59,9 +59,8 @@ export const PortalView: React.FC<PortalViewProps> = ({
     // --- STATE 1: REGISTERED PARTICIPANT CARD ---
     if (activeParticipant) {
         return (
-            <div className="w-full h-full flex flex-col items-center justify-center animate-scale-in p-4">
+            <div className="w-full h-full flex flex-col items-center justify-center animate-scale-in p-4 relative">
                 <div className="w-full max-w-md bg-white shadow-xl border-t-4 border-[#1e3a8a] p-6 md:p-10 text-center relative z-20 rounded-lg">
-                    
                     <div className="mb-6 flex justify-center">
                         <div className="h-16 w-16 bg-[#eff6ff] rounded-full flex items-center justify-center text-[#1e3a8a]">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,7 +104,7 @@ export const PortalView: React.FC<PortalViewProps> = ({
 
     // --- STATE 2: REGISTRATION FORM (Multi-Step) ---
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in-up p-2">
+        <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in-up p-2 relative">
             <div className="w-full max-w-lg bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden flex flex-col h-full md:h-auto md:max-h-[85vh] rounded-xl">
                 
                 {/* Header */}

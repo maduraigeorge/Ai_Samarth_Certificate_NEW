@@ -62,3 +62,21 @@ export const updateParticipantStatus = async (id: string, status: { quizPassed?:
     console.warn("Backend API Error (Update Status):", error);
   }
 };
+
+// --- Admin Service ---
+export const getAllParticipants = async () => {
+  try {
+    const response = await fetch(`${BACKEND_API_URL}/participants`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch participants');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};

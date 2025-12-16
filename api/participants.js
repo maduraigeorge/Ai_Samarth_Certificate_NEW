@@ -1,31 +1,23 @@
 
-// Vercel Serverless Function: Proxy for Registration
+// Vercel Serverless Function: Proxy for Fetching Participants (Admin)
 export default async function handler(req, res) {
-  // Use Environment Variable or Fallback to known IP
+  // Use Environment Variable or Fallback
   const baseUrl = process.env.BACKEND_URL || 'http://13.232.90.36:5000';
 
-  // Remove trailing slash if present
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
-  const AWS_SERVER_URL = `${cleanBaseUrl}/api/register`;
+  const AWS_SERVER_URL = `${cleanBaseUrl}/api/participants`;
 
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const response = await fetch(AWS_SERVER_URL, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(req.body),
     });
-
-    // Check if the response from AWS is valid JSON
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-       throw new Error(`Invalid response from backend: ${response.statusText}`);
-    }
 
     const data = await response.json();
 

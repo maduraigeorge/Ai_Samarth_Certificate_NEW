@@ -8,6 +8,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Backend is running' });
+});
+
+
 // Middleware
 app.use(cors()); // Allows your React app to talk to this server
 app.use(bodyParser.json());
@@ -111,6 +117,19 @@ app.patch('/api/update/:id', (req, res) => {
       return res.status(500).json({ error: 'Database update failed' });
     }
     res.json({ message: 'Status updated successfully' });
+  });
+});
+
+// 3. Admin: Get All Participants
+app.get('/api/participants', (req, res) => {
+  const sql = 'SELECT * FROM participants ORDER BY id DESC';
+  
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database fetch error' });
+    }
+    res.json(results);
   });
 });
 
