@@ -2,6 +2,7 @@
 // Vercel Serverless Function: Proxy for Registration
 export default async function handler(req, res) {
   // Use Environment Variable or Fallback to known IP
+  // CORRECTED IP: 13.231.95.36
   const baseUrl = process.env.BACKEND_URL || 'http://13.232.90.36:5000';
 
   // Remove trailing slash if present

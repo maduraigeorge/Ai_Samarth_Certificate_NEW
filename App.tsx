@@ -181,7 +181,7 @@ const App: React.FC = () => {
       {view === AppView.PORTAL && (
           <button 
             onClick={() => setView(AppView.ADMIN_LOGIN)}
-            className="fixed bottom-3 right-3 z-[100] p-2 text-slate-400 hover:text-blue-800 transition-colors opacity-70 hover:opacity-100"
+            className="fixed bottom-4 right-4 z-[100] p-3 bg-white text-slate-600 hover:text-blue-800 shadow-lg rounded-full transition-all hover:scale-110"
             title="Admin Access"
         >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
