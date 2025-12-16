@@ -28,6 +28,7 @@ export const PortalView: React.FC<PortalViewProps> = ({
         phone: '',
         gender: ''
     });
+    const [errors, setErrors] = useState<{[key: string]: string}>({});
 
     const firstInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,21 +40,70 @@ export const PortalView: React.FC<PortalViewProps> = ({
     }, [step, activeParticipant]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        
+        // Clear error for this field if it exists
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: '' }));
+        }
+    };
+
+    const validateStep1 = () => {
+        const newErrors: {[key: string]: string} = {};
+        
+        if (!formData.fullName.trim() || formData.fullName.trim().length < 2) {
+            newErrors.fullName = "Name must be at least 2 characters long.";
+        }
+        if (!formData.schoolName.trim()) {
+            newErrors.schoolName = "School name is required.";
+        }
+        if (!formData.gender) {
+            newErrors.gender = "Please select your gender.";
+        }
+        if (!formData.city.trim()) {
+            newErrors.city = "City is required.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const validateStep2 = () => {
+        const newErrors: {[key: string]: string} = {};
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required.";
+        } else if (!emailRegex.test(formData.email.trim())) {
+            newErrors.email = "Please enter a valid email address.";
+        }
+
+        // Phone validation (10 digits numeric)
+        const phoneRegex = /^\d{10}$/;
+        if (!formData.phone.trim()) {
+            newErrors.phone = "Phone number is required.";
+        } else if (!phoneRegex.test(formData.phone.trim())) {
+            newErrors.phone = "Phone number must be exactly 10 digits.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
-        if (step === 1 && !formData.gender) {
-            alert("Please select your gender.");
-            return;
+        if (validateStep1()) {
+            setStep(2);
         }
-        setStep(2);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onRegister(formData);
+        if (validateStep2()) {
+            onRegister(formData);
+        }
     };
 
     // --- STATE 1: REGISTERED PARTICIPANT CARD ---
@@ -129,50 +179,62 @@ export const PortalView: React.FC<PortalViewProps> = ({
                             <div className="space-y-4">
                                 {/* Row 1: Full Name */}
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Full Name (as per Govt Records)</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                        Full Name (as per Govt Records) <span className="text-red-500">*</span>
+                                    </label>
                                     <input 
                                         ref={firstInputRef}
-                                        required name="fullName" 
+                                        name="fullName" 
                                         value={formData.fullName} onChange={handleChange}
-                                        className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base"
+                                        className={`w-full p-3 bg-slate-50 border ${errors.fullName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
                                         placeholder="Enter your full name"
                                     />
+                                    {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>}
                                 </div>
 
                                 {/* Row 2: School Name */}
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">School Name</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                        School Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input 
-                                        required name="schoolName" 
+                                        name="schoolName" 
                                         value={formData.schoolName} onChange={handleChange}
-                                        className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base"
+                                        className={`w-full p-3 bg-slate-50 border ${errors.schoolName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
                                         placeholder="Enter school name"
                                     />
+                                    {errors.schoolName && <p className="text-red-500 text-xs mt-1">{errors.schoolName}</p>}
                                 </div>
 
                                 {/* Row 3: Gender & City */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Gender</label>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                            Gender <span className="text-red-500">*</span>
+                                        </label>
                                         <select
-                                            required name="gender"
+                                            name="gender"
                                             value={formData.gender} onChange={handleChange}
-                                            className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 rounded-none h-[46px] text-sm md:text-base"
+                                            className={`w-full p-3 bg-slate-50 border ${errors.gender ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 rounded-none h-[46px] text-sm md:text-base`}
                                         >
                                             <option value="">Select...</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                             <option value="Others">Others</option>
                                         </select>
+                                        {errors.gender && <p className="text-red-500 text-xs mt-1">{errors.gender}</p>}
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">City</label>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                            City <span className="text-red-500">*</span>
+                                        </label>
                                         <input 
-                                            required name="city" 
+                                            name="city" 
                                             value={formData.city} onChange={handleChange}
-                                            className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none h-[46px] text-sm md:text-base"
+                                            className={`w-full p-3 bg-slate-50 border ${errors.city ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none h-[46px] text-sm md:text-base`}
                                             placeholder="City"
                                         />
+                                        {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
                                     </div>
                                 </div>
                             </div>
@@ -193,23 +255,30 @@ export const PortalView: React.FC<PortalViewProps> = ({
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email Address</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                        Email Address <span className="text-red-500">*</span>
+                                    </label>
                                     <input 
                                         ref={firstInputRef}
-                                        required type="email" name="email" 
+                                        type="email" name="email" 
                                         value={formData.email} onChange={handleChange}
-                                        className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base"
+                                        className={`w-full p-3 bg-slate-50 border ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
                                         placeholder="Enter your email"
                                     />
+                                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Phone Number</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                        Phone Number <span className="text-red-500">*</span>
+                                    </label>
                                     <input 
-                                        required type="tel" name="phone" 
+                                        type="tel" name="phone" 
                                         value={formData.phone} onChange={handleChange}
-                                        className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base"
-                                        placeholder="Enter your phone number"
+                                        maxLength={10}
+                                        className={`w-full p-3 bg-slate-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        placeholder="Enter 10-digit mobile number"
                                     />
+                                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                                 </div>
                             </div>
 
