@@ -156,20 +156,18 @@ export const PortalView: React.FC<PortalViewProps> = ({
                     <h1 className="text-xl md:text-2xl font-serif font-bold tracking-wide">
                         Participant Registration
                     </h1>
-                    <div className="flex justify-center gap-2 mt-3">
-                        <div className={`h-1.5 w-8 rounded-full transition-all duration-300 ${step === 1 ? 'bg-white' : 'bg-white/30'}`}></div>
-                        <div className={`h-1.5 w-8 rounded-full transition-all duration-300 ${step === 2 ? 'bg-white' : 'bg-white/30'}`}></div>
+                    <p className="text-[10px] md:text-xs text-blue-100 uppercase tracking-[0.2em] font-bold mt-1.5 opacity-90">
+                        {step === 1 ? 'Section 1: Personal & Contact Information' : 'Section 2: Academic Information'}
+                    </p>
+                    <div className="flex justify-center gap-2 mt-4">
+                        <div className={`h-1 w-8 rounded-full transition-all duration-300 ${step === 1 ? 'bg-white' : 'bg-white/20'}`}></div>
+                        <div className={`h-1 w-8 rounded-full transition-all duration-300 ${step === 2 ? 'bg-white' : 'bg-white/20'}`}></div>
                     </div>
                 </div>
 
                 <div className="p-4 md:p-8 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
                     {step === 1 ? (
                         <form onSubmit={handleNextStep} className="flex flex-col space-y-4 animate-slide-up-fade py-2">
-                            <div className="text-center mb-2">
-                                <h2 className="text-lg font-semibold text-slate-800 uppercase tracking-widest text-sm">Section 1: Personal & Contact Information</h2>
-                                <p className="text-[10px] text-slate-400 mt-1">Step 1 of 2</p>
-                            </div>
-
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. Full Name (as per govt records) <span className="text-red-500">*</span></label>
@@ -232,11 +230,6 @@ export const PortalView: React.FC<PortalViewProps> = ({
                         </form>
                     ) : (
                         <form onSubmit={handleSubmit} className="flex flex-col space-y-4 animate-slide-up-fade py-2">
-                             <div className="text-center mb-2">
-                                <h2 className="text-lg font-semibold text-slate-800 uppercase tracking-widest text-sm">Section 2: Academic Information</h2>
-                                <p className="text-[10px] text-slate-400 mt-1">Step 2 of 2</p>
-                            </div>
-
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. School Name <span className="text-red-500">*</span></label>
