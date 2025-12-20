@@ -39,8 +39,8 @@ export const AiSamarthLogo: React.FC = () => (
     <path d="M12 25 L14 20 L16 25 L21 27 L16 29 L14 34 L12 29 L7 27 Z" fill="#002D62" /> 
     <path d="M25 15 L26 12 L27 15 L30 16 L27 17 L26 20 L25 17 L22 16 Z" fill="#002D62" />
 
-    {/* Text */}
-    <text x="95" y="50" fontFamily="sans-serif" fontWeight="900" fontSize="38" fill="#002D62" letterSpacing="-1">AI Samarth</text>
-    <text x="96" y="74" fontFamily="sans-serif" fontStyle="italic" fontSize="13" fill="#002D62" letterSpacing="0.2">Empowering Bharat with AI Literacy</text>
+    {/* Text - Responsive hiding of tagline */}
+    <text x="95" y="50" className="font-sans font-black text-[38px] fill-[#002D62]">AI Samarth</text>
+    <text x="96" y="74" className="hidden sm:block font-sans italic text-[13px] fill-[#002D62] tracking-[0.2px]">Empowering Bharat with AI Literacy</text>
   </svg>
 );

@@ -71,6 +71,8 @@ export const PortalView: React.FC<PortalViewProps> = ({
 
         if (!formData.phone || formData.phone.length !== 10) {
             newErrors.phone = "Phone number must be exactly 10 digits.";
+        } else if (formData.phone.startsWith('0')) {
+            newErrors.phone = "Phone number cannot start with 0.";
         }
 
         setErrors(newErrors);
@@ -80,8 +82,12 @@ export const PortalView: React.FC<PortalViewProps> = ({
     const validateSection2 = () => {
         const newErrors: {[key: string]: string} = {};
         
-        if (!formData.schoolName.trim()) newErrors.schoolName = "School name is required.";
-        if (!formData.city.trim()) newErrors.city = "City is required.";
+        if (!formData.schoolName.trim() || formData.schoolName.trim().length < 3) {
+            newErrors.schoolName = "School name must be at least 3 characters.";
+        }
+        if (!formData.city.trim() || formData.city.trim().length < 3) {
+            newErrors.city = "City name must be at least 3 characters.";
+        }
         if (!formData.gradesHandled) newErrors.gradesHandled = "Please select grades handled.";
         if (!formData.subjectsHandled) newErrors.subjectsHandled = "Please select subjects handled.";
 
@@ -152,156 +158,159 @@ export const PortalView: React.FC<PortalViewProps> = ({
         <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in-up p-2 relative">
             <div className="w-full max-w-lg bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden flex flex-col h-full md:h-auto md:max-h-[92vh] rounded-xl">
                 
-                <div className="bg-[#1e3a8a] p-4 md:p-6 text-white text-center shrink-0">
-                    <h1 className="text-xl md:text-2xl font-serif font-bold tracking-wide">
+                {/* Compact Header */}
+                <div className="bg-[#1e3a8a] py-2 md:py-3 px-4 text-white text-center shrink-0">
+                    <h1 className="text-lg md:text-xl font-serif font-bold tracking-wide">
                         Participant Registration
                     </h1>
-                    <p className="text-[10px] md:text-xs text-blue-100 uppercase tracking-[0.2em] font-bold mt-1.5 opacity-90">
-                        {step === 1 ? 'Section 1: Personal & Contact Information' : 'Section 2: Academic Information'}
-                    </p>
-                    <div className="flex justify-center gap-2 mt-4">
-                        <div className={`h-1 w-8 rounded-full transition-all duration-300 ${step === 1 ? 'bg-white' : 'bg-white/20'}`}></div>
-                        <div className={`h-1 w-8 rounded-full transition-all duration-300 ${step === 2 ? 'bg-white' : 'bg-white/20'}`}></div>
+                    <div className="flex flex-col items-center gap-1.5 mt-0.5">
+                        <p className="text-[9px] md:text-[10px] text-blue-100 uppercase tracking-[0.15em] font-bold opacity-90">
+                            {step === 1 ? 'Section 1: Personal & Contact' : 'Section 2: Academic Info'}
+                        </p>
+                        <div className="flex justify-center gap-1.5">
+                            <div className={`h-0.5 w-6 rounded-full transition-all duration-300 ${step === 1 ? 'bg-white' : 'bg-white/20'}`}></div>
+                            <div className={`h-0.5 w-6 rounded-full transition-all duration-300 ${step === 2 ? 'bg-white' : 'bg-white/20'}`}></div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="p-4 md:p-8 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
+                <div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
                     {step === 1 ? (
-                        <form onSubmit={handleNextStep} className="flex flex-col space-y-4 animate-slide-up-fade py-2">
-                            <div className="space-y-4">
+                        <form onSubmit={handleNextStep} className="flex flex-col space-y-3 md:space-y-4 animate-slide-up-fade py-1">
+                            <div className="space-y-3 md:space-y-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. Full Name (as per govt records) <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">1. Full Name (as per govt records) <span className="text-red-500">*</span></label>
                                     <input 
                                         ref={firstInputRef}
                                         name="fullName" 
                                         value={formData.fullName} onChange={handleChange}
-                                        className={`w-full p-3 bg-slate-50 border ${errors.fullName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        className={`w-full p-2.5 md:p-3 bg-slate-50 border ${errors.fullName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded text-sm`}
                                         placeholder="Enter your full name"
                                     />
-                                    {errors.fullName && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.fullName}</p>}
+                                    {errors.fullName && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.fullName}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">2. Gender <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. Gender <span className="text-red-500">*</span></label>
                                     <div className="grid grid-cols-3 gap-2">
                                         {['Male', 'Female', 'Others'].map((opt) => (
-                                            <label key={opt} className={`cursor-pointer flex items-center gap-2 p-2.5 border transition-all ${formData.gender === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
+                                            <label key={opt} className={`cursor-pointer flex items-center justify-center gap-1.5 p-2 border transition-all rounded ${formData.gender === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
                                                 <input 
                                                     type="radio" name="gender" value={opt} 
                                                     checked={formData.gender === opt} 
-                                                    onChange={handleChange} className="w-4 h-4 text-[#1e3a8a]" 
+                                                    onChange={handleChange} className="w-3 h-3 text-[#1e3a8a]" 
                                                 />
-                                                <span className={`text-xs font-bold ${formData.gender === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
+                                                <span className={`text-[11px] font-bold ${formData.gender === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
                                             </label>
                                         ))}
                                     </div>
-                                    {errors.gender && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.gender}</p>}
+                                    {errors.gender && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.gender}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">3. Email Address <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">3. Email Address <span className="text-red-500">*</span></label>
                                     <input 
                                         type="email" name="email" 
                                         value={formData.email} onChange={handleChange}
-                                        className={`w-full p-3 bg-slate-50 border ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        className={`w-full p-2.5 md:p-3 bg-slate-50 border ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded text-sm`}
                                         placeholder="Enter email address"
                                     />
-                                    {errors.email && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.email}</p>}
+                                    {errors.email && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.email}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">4. Phone Number <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">4. Phone Number <span className="text-red-500">*</span></label>
                                     <input 
                                         type="tel" name="phone" 
                                         value={formData.phone} onChange={handleChange}
-                                        className={`w-full p-3 bg-slate-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        className={`w-full p-2.5 md:p-3 bg-slate-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded text-sm`}
                                         placeholder="10-digit mobile number"
                                     />
-                                    {errors.phone && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.phone}</p>}
+                                    {errors.phone && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.phone}</p>}
                                 </div>
                             </div>
 
                             <button 
                                 type="submit"
-                                className="mt-4 w-full bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3.5 uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 rounded"
+                                className="mt-2 w-full bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3 uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2 rounded shadow-sm"
                             >
-                                Next: Academic Info &rarr;
+                                Next Step &rarr;
                             </button>
                         </form>
                     ) : (
-                        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 animate-slide-up-fade py-2">
-                            <div className="space-y-4">
+                        <form onSubmit={handleSubmit} className="flex flex-col space-y-3 md:space-y-4 animate-slide-up-fade py-1">
+                            <div className="space-y-3 md:space-y-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. School Name <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">1. School Name <span className="text-red-500">*</span></label>
                                     <input 
                                         ref={firstInputRef}
                                         name="schoolName" 
                                         value={formData.schoolName} onChange={handleChange}
-                                        className={`w-full p-3 bg-slate-50 border ${errors.schoolName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        className={`w-full p-2.5 md:p-3 bg-slate-50 border ${errors.schoolName ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded text-sm`}
                                         placeholder="Enter school name"
                                     />
-                                    {errors.schoolName && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.schoolName}</p>}
+                                    {errors.schoolName && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.schoolName}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. City <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">2. City <span className="text-red-500">*</span></label>
                                     <input 
                                         name="city" 
                                         value={formData.city} onChange={handleChange}
-                                        className={`w-full p-3 bg-slate-50 border ${errors.city ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded-none text-sm md:text-base`}
+                                        className={`w-full p-2.5 md:p-3 bg-slate-50 border ${errors.city ? 'border-red-500 bg-red-50' : 'border-slate-300'} focus:border-[#1e3a8a] focus:ring-1 focus:ring-[#1e3a8a] outline-none transition-colors text-slate-900 placeholder-slate-400 rounded text-sm`}
                                         placeholder="Enter city"
                                     />
-                                    {errors.city && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.city}</p>}
+                                    {errors.city && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.city}</p>}
                                 </div>
                                 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">3. Grades Handled <span className="text-red-500">*</span></label>
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">3. Grades Handled <span className="text-red-500">*</span></label>
+                                    <div className="grid grid-cols-2 gap-2">
                                         {['Grades 1–5', 'Grades 6–10'].map((opt) => (
-                                            <label key={opt} className={`cursor-pointer flex items-center gap-3 p-3 border transition-all ${formData.gradesHandled === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
+                                            <label key={opt} className={`cursor-pointer flex items-center justify-center gap-2 p-2.5 border transition-all rounded ${formData.gradesHandled === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
                                                 <input 
                                                     type="radio" name="gradesHandled" value={opt} 
                                                     checked={formData.gradesHandled === opt} 
-                                                    onChange={handleChange} className="w-4 h-4 text-[#1e3a8a]" 
+                                                    onChange={handleChange} className="w-3 h-3 text-[#1e3a8a]" 
                                                 />
-                                                <span className={`text-xs font-bold ${formData.gradesHandled === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
+                                                <span className={`text-[11px] font-bold ${formData.gradesHandled === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
                                             </label>
                                         ))}
                                     </div>
-                                    {errors.gradesHandled && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.gradesHandled}</p>}
+                                    {errors.gradesHandled && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.gradesHandled}</p>}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">4. Subjects Handled <span className="text-red-500">*</span></label>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">4. Subjects Handled <span className="text-red-500">*</span></label>
                                     <div className="grid grid-cols-2 gap-2">
-                                        {['ICT', 'Science', 'Mathematics', 'Other Subjects'].map((opt) => (
-                                            <label key={opt} className={`cursor-pointer flex items-center gap-3 p-3 border transition-all ${formData.subjectsHandled === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
+                                        {['ICT', 'Science', 'Mathematics', 'Other'].map((opt) => (
+                                            <label key={opt} className={`cursor-pointer flex items-center justify-center gap-2 p-2.5 border transition-all rounded ${formData.subjectsHandled === opt ? 'bg-blue-50 border-[#1e3a8a] ring-1 ring-[#1e3a8a]' : 'bg-white border-slate-200 hover:border-slate-400'}`}>
                                                 <input 
                                                     type="radio" name="subjectsHandled" value={opt} 
                                                     checked={formData.subjectsHandled === opt} 
-                                                    onChange={handleChange} className="w-4 h-4 text-[#1e3a8a]" 
+                                                    onChange={handleChange} className="w-3 h-3 text-[#1e3a8a]" 
                                                 />
-                                                <span className={`text-xs font-bold ${formData.subjectsHandled === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
+                                                <span className={`text-[11px] font-bold ${formData.subjectsHandled === opt ? 'text-[#1e3a8a]' : 'text-slate-600'}`}>{opt}</span>
                                             </label>
                                         ))}
                                     </div>
-                                    {errors.subjectsHandled && <p className="text-red-500 text-[10px] mt-1 font-bold">{errors.subjectsHandled}</p>}
+                                    {errors.subjectsHandled && <p className="text-red-500 text-[9px] mt-0.5 font-bold">{errors.subjectsHandled}</p>}
                                 </div>
                             </div>
 
-                            <div className="flex gap-3 mt-4">
+                            <div className="flex gap-2 mt-2">
                                 <button 
                                     type="button"
                                     onClick={() => setStep(1)}
-                                    className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 uppercase tracking-widest text-xs transition-all rounded"
+                                    className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 uppercase tracking-widest text-[10px] transition-all rounded"
                                 >
                                     Back
                                 </button>
                                 <button 
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-[2] bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3.5 uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 rounded"
+                                    className="flex-[2] bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3 uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2 rounded shadow-sm"
                                 >
-                                    {loading ? '...' : 'Complete Registration'}
+                                    {loading ? '...' : 'Complete & Register'}
                                 </button>
                             </div>
                         </form>
@@ -309,7 +318,7 @@ export const PortalView: React.FC<PortalViewProps> = ({
                 </div>
             </div>
             
-            <div className="text-center mt-2 md:mt-4 shrink-0">
+            <div className="text-center mt-2 shrink-0">
                  <p className="text-[10px] text-slate-400 uppercase tracking-widest">Powered by AI Samarth</p>
             </div>
         </div>
