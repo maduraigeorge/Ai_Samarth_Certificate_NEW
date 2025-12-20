@@ -53,7 +53,7 @@ export const Quiz: React.FC<QuizProps> = ({ topic, questions, onPass, onCancel }
         } else {
             setShowResult(true);
         }
-    }, 1200); // Slightly faster transition
+    }, 1200); 
   };
 
   const handleRetry = () => {
@@ -73,7 +73,7 @@ export const Quiz: React.FC<QuizProps> = ({ topic, questions, onPass, onCancel }
              {/* Header */}
              <div className="bg-[#1e3a8a] p-4 md:p-6 text-white text-center shrink-0">
                 <h1 className="text-xl md:text-2xl font-serif font-bold tracking-wide">
-                    Assessment Result
+                    Assessment Completed
                 </h1>
                 <div className="flex justify-center mt-2">
                     <div className="h-1 w-12 bg-white/30 rounded"></div>
@@ -82,41 +82,48 @@ export const Quiz: React.FC<QuizProps> = ({ topic, questions, onPass, onCancel }
 
             <div className="p-6 md:p-10 text-center flex-1 flex flex-col items-center justify-center">
                  <div className="mb-4 md:mb-6 flex justify-center">
-                     <div className={`h-20 w-20 md:h-24 md:w-24 rounded-full flex items-center justify-center text-4xl md:text-5xl shadow-sm ${isPassed ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                        {isPassed ? '✓' : '✕'}
+                     <div className={`h-20 w-20 md:h-24 md:w-24 rounded-full flex items-center justify-center text-4xl md:text-5xl shadow-sm ${isPassed ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-[#1e3a8a]'}`}>
+                        {isPassed ? '✓' : 'ⓘ'}
                      </div>
                  </div>
 
-                 <h2 className="text-lg md:text-2xl font-serif font-bold text-slate-800 mb-6">
-                    {isPassed ? 'Assessment Completed' : 'Assessment Failed'}
-                 </h2>
+                 <div className="mb-6">
+                    <h2 className="text-lg md:text-2xl font-serif font-bold text-slate-800">
+                        {isPassed ? 'Great Job!' : 'Thank you for participating'}
+                    </h2>
+                    <p className="text-slate-500 text-sm mt-2">
+                        You scored <span className="font-bold text-[#1e3a8a]">{score} out of {totalQuestions}</span>
+                    </p>
+                 </div>
                  
-                 {isPassed ? (
+                 <div className="space-y-3 w-full">
                     <button 
                         onClick={onPass}
                         title="Click to view and download your certificate"
-                        className="w-full bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3 md:py-3.5 uppercase tracking-widest text-xs transition-all rounded-lg"
+                        className="w-full bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold py-3 md:py-3.5 uppercase tracking-widest text-xs transition-all rounded-lg flex items-center justify-center gap-2"
                     >
-                        View Certificate
+                        <span>View Certificate</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </button>
-                 ) : (
-                    <div className="space-y-3 w-full">
+
+                    {!isPassed && (
                         <button 
                             onClick={handleRetry}
-                            title="Try the assessment again"
-                            className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 md:py-3.5 uppercase tracking-widest text-xs transition-all rounded-lg"
+                            className="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 uppercase tracking-widest text-[10px] transition-all rounded-lg"
                         >
-                            Retry Assessment
+                            Retry for a higher score
                         </button>
-                        <button 
-                            onClick={onCancel}
-                            title="Go back to the registration screen"
-                            className="w-full text-slate-500 hover:text-slate-700 text-xs uppercase tracking-widest py-2"
-                        >
-                            Back to Home
-                        </button>
-                    </div>
-                 )}
+                    )}
+
+                    <button 
+                        onClick={onCancel}
+                        className="w-full text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-widest py-2"
+                    >
+                        Back to Home
+                    </button>
+                 </div>
             </div>
         </div>
       </div>
@@ -156,7 +163,7 @@ export const Quiz: React.FC<QuizProps> = ({ topic, questions, onPass, onCancel }
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div className="absolute right-0 top-full mt-2 w-48 bg-slate-800 text-white text-xs p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                        Answer correctly to proceed. You need 50% to pass.
+                        Complete the quiz to receive your certificate.
                     </div>
                 </div>
             </div>

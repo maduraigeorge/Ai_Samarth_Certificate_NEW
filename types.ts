@@ -7,6 +7,8 @@ export interface Participant {
   email: string;
   phone: string;
   gender: string;
+  gradesHandled: string;
+  subjectsHandled: string;
   
   // App State
   quizPassed: boolean;

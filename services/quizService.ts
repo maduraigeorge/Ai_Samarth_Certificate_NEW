@@ -1,119 +1,117 @@
 
 import { QuizQuestion } from '../types';
 
-// Hardcoded pool of questions
+// Hardcoded pool of questions updated as per user request
 const FIXED_QUIZ_POOL: QuizQuestion[] = [
   {
     id: 1,
-    question: "AI means:",
+    question: "How should teachers present the benefits of AI to students?",
     options: [
-      "A machine that can think exactly like humans",
-      "Technology that helps computers perform tasks like recognizing patterns and making decisions",
-      "Any device that uses electricity",
-      "A robot with a face"
+      "AI will solve all problems in society",
+      "AI can help in healthcare, education, and farming but has limitations",
+      "AI has no real benefits for society",
+      "Only urban-schools can benefit from AI"
     ],
-    answer: "Technology that helps computers perform tasks like recognizing patterns and making decisions"
+    answer: "AI can help in healthcare, education, and farming but has limitations"
   },
   {
     id: 2,
-    question: "True or False: AI needs data to learn and improve.",
-    options: ["True", "False"],
-    answer: "True"
+    question: "What should teachers tell students about using AI for schoolwork?",
+    options: [
+      "Copy everything AI provides without checking",
+      "Never use AI for any learning purpose",
+      "Use AI as a helper but verify the information",
+      "Only use AI for entertainment"
+    ],
+    answer: "Use AI as a helper but verify the information"
   },
   {
     id: 3,
-    question: "Which is an example of AI used in schools?",
+    question: "As a teacher, how should you explain AI risks to your students?",
     options: [
-      "Smart attendance systems",
-      "Chalkboard",
-      "School bell",
-      "Whiteboard marker"
+      "AI is completely safe and has no risks",
+      "AI can make mistakes and may affect some jobs",
+      "AI will destroy the world",
+      "Students should be afraid of using AI"
     ],
-    answer: "Smart attendance systems"
+    answer: "AI can make mistakes and may affect some jobs"
   },
   {
     id: 4,
-    question: "Machine Learning means:",
+    question: "When teaching students about writing prompts for AI, what should teachers emphasize?",
     options: [
-      "Machines learning on their own from data",
-      "Machines being taught in a classroom",
-      "Machines playing games",
-      "Machines repaired by engineers"
+      "Use complex and difficult language",
+      "Write very long instructions",
+      "Be clear, specific, and include context",
+      "Ask many questions at the same time"
     ],
-    answer: "Machines learning on their own from data"
+    answer: "Be clear, specific, and include context"
   },
   {
     id: 5,
-    question: "True or False: AI always gives 100% correct answers.",
-    options: ["True", "False"],
-    answer: "False"
+    question: "How can teachers use AI tools for their own professional development?",
+    options: [
+      "Replace all their teaching methods with AI",
+      "Use AI to help create lesson plans and organize work",
+      "Avoid AI completely in professional work",
+      "Only use AI for personal entertainment"
+    ],
+    answer: "Use AI to help create lesson plans and organize work"
   },
   {
     id: 6,
-    question: "What is AI “hallucination”?",
+    question: "Which of these is an effective prompt for AI to help with lesson planning?",
     options: [
-      "AI becoming slow",
-      "AI refusing to answer",
-      "AI giving wrong or made-up information",
-      "AI turning off suddenly"
+      "\"Make me a lesson plan\"",
+      "\"Create a 45-minute Hindi lesson plan for Class 7 students on '' with activities and examples\"",
+      "\"Give me something for teaching\"",
+      "\"Help me teach students everything about grammar\""
     ],
-    answer: "AI giving wrong or made-up information"
+    answer: "\"Create a 45-minute Hindi lesson plan for Class 7 students on '' with activities and examples\""
   },
   {
     id: 7,
-    question: "Which is a safe way to use AI?",
+    question: "How can teachers use AI tools to make their teaching more efficient?",
     options: [
-      "Uploading student personal details",
-      "Sharing exam papers with AI",
-      "Checking the AI output before using it",
-      "Letting students use AI freely without guidance"
+      "Let AI teach all classes instead of the teacher",
+      "Use AI to generate lesson plans and create practice questions for students",
+      "Replace all textbooks with AI-generated content only",
+      "Use AI to give marks to students without checking their work"
     ],
-    answer: "Checking the AI output before using it"
+    answer: "Use AI to generate lesson plans and create practice questions for students"
   },
   {
     id: 8,
-    question: "True or False: AI tools should always be supervised by teachers when used by students.",
-    options: ["True", "False"],
-    answer: "True"
+    question: "Which administrative task can teachers effectively use AI for?",
+    options: [
+      "Deciding student grades without reviewing their work",
+      "Drafting parent communication letters and creating school event notices",
+      "Making all school policy decisions",
+      "Hiring other teachers"
+    ],
+    answer: "Drafting parent communication letters and creating school event notices"
   },
   {
     id: 9,
-    question: "What is a dataset?",
+    question: "What is the most important role of a teacher when students use AI in the classroom?",
     options: [
-      "A group of desks",
-      "A collection of data used to train AI",
-      "A computer virus",
-      "A school timetable"
+      "Stop students from using any AI tools",
+      "Let students use AI without any guidance or rules",
+      "Guide students to use AI responsibly and check AI-generated information",
+      "Use AI to do all the teaching work"
     ],
-    answer: "A collection of data used to train AI"
+    answer: "Guide students to use AI responsibly and check AI-generated information"
   },
   {
     id: 10,
-    question: "Why can AI become biased?",
+    question: "When writing prompts for AI to help with school work, teachers should:",
     options: [
-      "AI has feelings",
-      "AI gets tired",
-      "AI learns from biased or incomplete data",
-      "AI prefers certain users"
+      "Use very complicated and technical language",
+      "Ask for everything in one single long prompt",
+      "Be specific, clear, and include context about what they need",
+      "Copy prompts from the internet without changing them"
     ],
-    answer: "AI learns from biased or incomplete data"
-  },
-  {
-    id: 11,
-    question: "True or False: AI should be used as a helper, not a replacement for teachers.",
-    options: ["True", "False"],
-    answer: "True"
-  },
-  {
-    id: 12,
-    question: "Which statement is correct?",
-    options: [
-      "AI can help teachers save time",
-      "AI can do everything a teacher can",
-      "AI should be trusted without checking",
-      "AI does not need any data"
-    ],
-    answer: "AI can help teachers save time"
+    answer: "Be specific, clear, and include context about what they need"
   }
 ];
 

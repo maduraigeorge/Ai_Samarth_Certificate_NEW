@@ -43,12 +43,6 @@ export const Certificate: React.FC<CertificateProps> = ({ config, onClose, onDow
     setTimeout(() => window.print(), 100);
   };
 
-  const handleCorrection = () => {
-      const subject = `Certificate Correction: ${config.recipientName}`;
-      const body = `Hi Team,\n\nI attended the session "${config.webinarTitle}".\n\nThere is an error in my certificate details.\n\nName on Certificate: ${config.recipientName}\n\nPlease correct it to: \n\n[Type correct name here]`;
-      window.location.href = `mailto:support@chrysalis.world?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/90 flex flex-col items-center justify-start p-4 print:p-0 print:bg-white print:static print:block overflow-hidden backdrop-blur-sm">
       
@@ -67,14 +61,6 @@ export const Certificate: React.FC<CertificateProps> = ({ config, onClose, onDow
             </button>
 
             <div className="w-px h-6 bg-slate-300 mx-1"></div>
-
-            <button 
-                onClick={handleCorrection}
-                className="px-4 py-2 rounded-lg hover:bg-slate-100 text-slate-600 font-medium text-sm transition-colors flex items-center gap-2"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                <span className="hidden sm:inline">Request Correction</span>
-            </button>
 
             <button 
                 onClick={handlePrint}
